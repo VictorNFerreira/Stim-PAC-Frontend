@@ -192,6 +192,32 @@ const appCorporativa =
                     input.required = true;
 
             }
+
+            else if(col.tipo === "selecao")
+            {
+                input = document.createElement("select");
+                input.name = col.dado;
+                input.id = col.dado;
+
+                const optGenerico = document.createElement("option");
+                optGenerico.value = "";
+                optGenerico.textContent = "Selecione...";
+                input.appendChild(optGenerico);
+
+                col.opcoes.forEach(opcao =>
+                {
+                    const opt = document.createElement("option");
+                    opt.value = opcao.valor;
+                    opt.textContent = opcao.nome;
+                    input.appendChild(opt);
+
+                });
+
+                if(col.obrigatorio)
+                    input.required = true;
+
+            }
+
             else
             {
                 input = document.createElement("input");
