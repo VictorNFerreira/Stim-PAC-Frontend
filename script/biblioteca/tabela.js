@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async function()
         colunas:
         [
             {titulo: 'ID', dado: 'id'},
-            //{titulo: 'Jogos', dado: 'jogos'},
+            {titulo: 'Jogos', dado: 'jogos'},
             {titulo: 'Quantidade de Itens', dado: 'quantidadeItens'},
 
         ],

@@ -50,7 +50,15 @@ const appCorporativa =
                 parametros.colunas.forEach(coluna =>
                 {
                     const td = document.createElement("td");
-                    const valor = coluna.dado.split('.').reduce((obj, chave) => obj && obj[chave], item);
+                    let valor = coluna.dado.split('.').reduce((obj, chave) => obj && obj[chave], item);
+
+                    if(Array.isArray(valor))
+                    {
+                        valor = valor.map(item => item.nome).join(", ")
+
+                    }
+                    
+                    
                     td.textContent = valor ?? "";
                     linha.appendChild(td);
 
@@ -168,10 +176,8 @@ const appCorporativa =
                     dados.forEach(op =>
                     {
                         const opt = document.createElement("option");
-                        const idRel = JSON.stringify(op);
-                        const nomeRel = col.dadoExibicao.split('.');
-                        opt.value = idRel;
-                        opt.textContent = op[nomeRel[1]];
+                        opt.value = op.id;
+                        opt.textContent = op.nome;
                         input.appendChild(opt);
 
                     });
@@ -302,16 +308,12 @@ const appCorporativa =
             const obj = {};
 
             parametros.colunas.forEach(col =>
-                {
+            {
                 const valor = form.querySelector(`[name='${col.dado}']`).value;
                 if(col.tipo === "relacionamento")
                 {
-                    const partes = col.dado.split('.');
-                    if(partes.length > 1)
-                    {
-                        obj[partes[0]] = { [partes[1]]: valor };
-
-                    }
+                    if(valor && valor.trim() !== "")
+                        obj[col.dado] = {id: parseInt(valor), tipo: col.dado};
 
                 }
                 else
