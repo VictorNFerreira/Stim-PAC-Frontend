@@ -176,8 +176,9 @@ const appCorporativa =
                     dados.forEach(op =>
                     {
                         const opt = document.createElement("option");
+                        const nomeRel = col.dadoExibicao.split('.');
                         opt.value = op.id;
-                        opt.textContent = op.nome;
+                        opt.textContent = op[nomeRel[1]];
                         input.appendChild(opt);
 
                     });
@@ -307,13 +308,21 @@ const appCorporativa =
             e.preventDefault();
             const obj = {};
 
+            const produtoTipo = form.querySelector("[name='produtoTipo']")?.value;
+
             parametros.colunas.forEach(col =>
             {
                 const valor = form.querySelector(`[name='${col.dado}']`).value;
                 if(col.tipo === "relacionamento")
                 {
                     if(valor && valor.trim() !== "")
+                    {
                         obj[col.dado] = {id: parseInt(valor), tipo: col.dado};
+
+                        if(col.dado === "produto" && produtoTipo)
+                            obj[col.dado].tipo = produtoTipo;
+
+                    }
 
                 }
                 else
