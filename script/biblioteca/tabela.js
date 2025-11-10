@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async function()
         exibeRemover: false,
         urlRemover: '',
         urlEditar: '',
+        token: localStorage.getItem("tokenAppCorporativa"),
 
     };
     await appCorporativa.criarTabela(parametros);

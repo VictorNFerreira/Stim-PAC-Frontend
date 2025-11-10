@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async function()
         exibeRemover: true,
         urlRemover: 'http://localhost:8080/AppCorporativaMavenWeb/compras',
         urlEditar: 'formulario.html?id=',
+        token: localStorage.getItem("tokenAppCorporativa"),
 
     };
     await appCorporativa.criarTabela(parametros);

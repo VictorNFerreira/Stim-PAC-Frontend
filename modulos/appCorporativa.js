@@ -38,7 +38,14 @@ const appCorporativa =
 
         try
         {
-            const resposta = await fetch(parametros.url, {method: "GET", mode: 'cors', headers: { "Content-Type": "application/json" }});
+            let headers = {"Content-Type": "application/json"};
+            if(parametros.token)
+            {
+                headers["Authorization"] = "Bearer " + parametros.token;
+                
+            }
+
+            const resposta = await fetch(parametros.url, {method: "GET", mode: 'cors', headers: headers});
             if(!resposta.ok)
                 throw new Error("Erro ao buscar dados da URL: " + parametros.url);
             const dados = await resposta.json();
@@ -57,7 +64,6 @@ const appCorporativa =
                         valor = valor.map(item => item.nome).join(", ")
 
                     }
-                    
                     
                     td.textContent = valor ?? "";
                     linha.appendChild(td);
@@ -86,15 +92,20 @@ const appCorporativa =
                     {
                         const btnRemover = document.createElement("button");
                         btnRemover.textContent = "Remover";
-                        btnRemover.onclick = async () =>
+                        btnRemover.onclick = async() =>
                         {
                             if(confirm("Deseja realmente remover este registro?"))
                             {
-                                const resp = await fetch(parametros.urlRemover + "/" + idItem, { method: "DELETE" });
+                                let headers = {"Content-Type": "application/json"};
+                                if(parametros.token)
+                                    headers["Authorization"] = "Bearer " + parametros.token;
+
+                                const resp = await fetch(parametros.urlRemover + "/" + idItem, {method: "DELETE", headers: headers});
                                 if(resp.ok)
                                 {
                                     alert("Registro removido com sucesso!");
                                     appCorporativa.criarTabela(parametros);
+
                                 }
                                 else
                                 {
@@ -141,7 +152,7 @@ const appCorporativa =
         const urlParams = new URLSearchParams(window.location.search);
         const idEdicao = urlParams.get("id");
 
-        for(const col of parametros.colunas)
+        for(const col of parametros.campos)
         {
             const divContainer = document.createElement("div");
             divContainer.style.marginBottom = "10px";
@@ -171,7 +182,14 @@ const appCorporativa =
 
                 try
                 {
-                    const resp = await fetch(col.urlConsulta);
+                    let headers = {"Content-Type": "application/json"};
+                    if(parametros.token)
+                    {
+                        headers["Authorization"] = "Bearer " + parametros.token;
+
+                    }
+
+                    const resp = await fetch(col.urlConsulta, {headers: headers});
                     const dados = await resp.json();
                     dados.forEach(op =>
                     {
@@ -275,7 +293,14 @@ const appCorporativa =
             console.log("Edição"+ idEdicao);
             try
             {
-                const resp = await fetch(parametros.urlCargaDados.replace("id=", "") + idEdicao);
+                let headers = {"Content-Type": "application/json"};
+                if(parametros.token)
+                {
+                    headers["Authorization"] = "Bearer " + parametros.token;
+
+                }
+
+                const resp = await fetch(parametros.urlCargaDados.replace("id=", "") + idEdicao, {headers: headers});
                 if(resp.ok)
                 {
                     const dados = await resp.json();
@@ -310,7 +335,7 @@ const appCorporativa =
 
             const produtoTipo = form.querySelector("[name='produtoTipo']")?.value;
 
-            parametros.colunas.forEach(col =>
+            parametros.campos.forEach(col =>
             {
                 const valor = form.querySelector(`[name='${col.dado}']`).value;
                 if(col.tipo === "relacionamento")
@@ -338,10 +363,17 @@ const appCorporativa =
 
             try
             {
+                let headers = {"Content-Type": "application/json"};
+                if(parametros.token)
+                {
+                    headers["Authorization"] = "Bearer " + parametros.token;
+
+                }
+
                 const resp = await fetch(urlEnvio,
                 {
                     method: metodo,
-                    headers: { "Content-Type": "application/json" },
+                    headers: headers,
                     body: JSON.stringify(obj)
 
                 });

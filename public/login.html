@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link rel="stylesheet" href="style-login.css">
+    </head>
+
+    <body>
+        <div class="login-card">
+            <h2>Entrar no Sistema</h2>
+            <p>Escolha um provedor de login:</p>
+            <button onclick="loginComGoogle()">Login com Google</button>
+        </div>
+
+        <script>
+            const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
+            const GOOGLE_CLIENT_ID = "565559413209-odiq1a877dap59ppidoetbm5jdr17eop.apps.googleusercontent.com";
+            const REDIRECT_URI = "http://127.0.0.1:5500/public/retorno-autenticacao.html";
+
+            function loginComGoogle()
+            {
+                const url = `${GOOGLE_AUTH_URL}?client_id=${GOOGLE_CLIENT_ID}` + `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` + `&response_type=code&scope=openid%20email%20profile`;
+                window.location.href = url;
+
+            }
+        </script>
+    </body>
+</html>

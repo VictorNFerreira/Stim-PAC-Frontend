@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async function()
     let parametros =
     {
         idFormulario: 'formProduto',
-        colunas:
+        campos:
         [
             {titulo: 'ID', dado: 'id', tipo: 'oculto', obrigatorio: false},
             {titulo: 'Nome', dado: 'nome', tipo: 'textoCurto', obrigatorio: true},
@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async function()
         urlCadastrar: 'http://localhost:8080/AppCorporativaMavenWeb/produtos',
         urlEditar: 'http://localhost:8080/AppCorporativaMavenWeb/produtos/id=',
         urlCargaDados: 'http://localhost:8080/AppCorporativaMavenWeb/produtos/id=',
+        token: localStorage.getItem("tokenAppCorporativa"),
 
     };
     appCorporativa.criarFormulario(parametros);
