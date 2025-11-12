@@ -1,40 +1,16 @@
 const appCorporativa =
 {
-    async criarTabela(parametros)
+    async criarLista(parametros)
     {
-        const tabela = document.getElementById(parametros.idTabela);
-        if(!tabela)
+        const dl = document.getElementById(parametros.idLista);
+        if(!dl)
         {
-            console.error("Tabela com o ID informado não foi encontrada:", parametros.idTabela);
+            console.error("Lista com o ID informado não foi encontrada:", parametros.idLista);
             return;
 
         }
 
-        tabela.innerHTML = "";
-
-        const thead = document.createElement("thead");
-        const linhaCabecalho = document.createElement("tr");
-
-        parametros.colunas.forEach(coluna =>
-        {
-            const th = document.createElement("th");
-            th.textContent = coluna.titulo;
-            linhaCabecalho.appendChild(th);
-
-        });
-
-        if(parametros.exibeEditar || parametros.exibeRemover)
-        {
-            const thAcoes = document.createElement("th");
-            thAcoes.textContent = "Ações";
-            linhaCabecalho.appendChild(thAcoes);
-
-        }
-
-        thead.appendChild(linhaCabecalho);
-        tabela.appendChild(thead);
-
-        const tbody = document.createElement("tbody");
+        dl.innerHTML = "";
 
         try
         {
@@ -52,45 +28,69 @@ const appCorporativa =
 
             dados.forEach(item =>
             {
-                const linha = document.createElement("tr");
+                const divRegistro = document.createElement("div");
+                divRegistro.classList.add("lista-registro")
 
-                parametros.colunas.forEach(coluna =>
+                const divDados = document.createElement("div");
+                divDados.classList.add("lista-dados");
+                divRegistro.appendChild(divDados);
+
+                parametros.linhas.forEach(linha =>
                 {
-                    const td = document.createElement("td");
-                    let valor = coluna.dado.split('.').reduce((obj, chave) => obj && obj[chave], item);
-
+                    let valor = linha.dado.split('.').reduce((obj, chave) => obj && obj[chave], item);
                     if(Array.isArray(valor))
                     {
                         valor = valor.map(item => item.nome).join(", ")
 
                     }
+
+                    if(linha.titulo == "ID")
+                    {
+                        const dt = document.createElement("dt");
+                        dt.textContent = linha.titulo + ": " + valor;
+                        divDados.appendChild(dt);
+
+                    }
+                    else
+                    {
+                        if(valor != null)
+                        {
+                            const dd = document.createElement("dd");
+                            dd.textContent = linha.titulo + ": " + valor ?? "";
+                            divDados.appendChild(dd);
+
+                        }
+                        
+                    }
                     
-                    td.textContent = valor ?? "";
-                    linha.appendChild(td);
+                    divRegistro.appendChild(divDados);
 
                 });
 
                 if(parametros.exibeEditar || parametros.exibeRemover)
                 {
-                    const tdAcoes = document.createElement("td");
+                    const divBotoes = document.createElement("div");
+                    divBotoes.classList.add("lista-botoes");
+                    divRegistro.appendChild(divBotoes);
+                    
                     const idItem = item[parametros.idEnvio || "id"];
 
                     if(parametros.exibeEditar)
                     {
-                        const btnEditar = document.createElement("button");
+                        const btnEditar = document.createElement("a");
                         btnEditar.textContent = "Editar";
                         btnEditar.onclick = () =>
                         {
                             window.location.href = parametros.urlEditar + idItem;
 
                         };
-                        tdAcoes.appendChild(btnEditar);
+                        divBotoes.appendChild(btnEditar);
 
                     }
 
                     if(parametros.exibeRemover)
                     {
-                        const btnRemover = document.createElement("button");
+                        const btnRemover = document.createElement("a");
                         btnRemover.textContent = "Remover";
                         btnRemover.onclick = async() =>
                         {
@@ -104,7 +104,7 @@ const appCorporativa =
                                 if(resp.ok)
                                 {
                                     alert("Registro removido com sucesso!");
-                                    appCorporativa.criarTabela(parametros);
+                                    appCorporativa.criarLista(parametros);
 
                                 }
                                 else
@@ -116,17 +116,18 @@ const appCorporativa =
                             }
 
                         };
-                        tdAcoes.appendChild(btnRemover);
+                        divBotoes.appendChild(btnRemover);
 
                     }
-                    linha.appendChild(tdAcoes);
+
+                    divRegistro.appendChild(divBotoes);
 
                 }
-                tbody.appendChild(linha);
+
+                dl.appendChild(divRegistro);
 
             });
 
-            tabela.appendChild(tbody);
         }
         catch(erro)
         {
@@ -149,24 +150,26 @@ const appCorporativa =
 
         form.innerHTML = "";
 
+        const divFormulario = document.createElement("div");
+        divFormulario.classList.add("principal-formulario")
+
         const urlParams = new URLSearchParams(window.location.search);
         const idEdicao = urlParams.get("id");
 
         for(const col of parametros.campos)
         {
             const divContainer = document.createElement("div");
-            divContainer.style.marginBottom = "10px";
             form.appendChild(divContainer);
-            if(col.tipo !== "oculto")
+            if(col.tipo != "oculto")
             {
                 const label = document.createElement("label");
-                label.textContent = col.titulo+": ";
+                label.textContent = col.titulo + ": ";
                 label.style.display = "block";
                 divContainer.appendChild(label);
 
             }
-            let input;
 
+            let input;
             if(col.tipo === "relacionamento")
             {
                 input = document.createElement("select");
@@ -177,6 +180,7 @@ const appCorporativa =
                 optGenerico.value = "";
                 optGenerico.textContent = "Selecione...";
                 input.appendChild(optGenerico);
+
                 if(col.obrigatorio)
                     input.required = true;
 
@@ -217,7 +221,6 @@ const appCorporativa =
                     input.required = true;
 
             }
-
             else if(col.tipo === "selecao")
             {
                 input = document.createElement("select");
@@ -242,7 +245,6 @@ const appCorporativa =
                     input.required = true;
 
             }
-
             else
             {
                 input = document.createElement("input");
@@ -257,7 +259,13 @@ const appCorporativa =
                     case "numero":
                         input.type = "number";
                         break;
-                    case "textoCurto":
+                    case "email":
+                        input.type = "email";
+                        break;
+                    case "senha":
+                        input.type = "password";
+                        break;
+                    case "texto":
                         input.type = "text";
                         break;
                     case "oculto":
@@ -275,18 +283,19 @@ const appCorporativa =
 
             }
 
-            input.style.marginBottom = "10px";
-            input.style.display = "block";
-
             divContainer.appendChild(input);
+            divFormulario.appendChild(divContainer);
+
         }
 
-        const divContainerBtn = document.createElement("div");
-        const btnSalvar = document.createElement("button");
-        btnSalvar.textContent = idEdicao ? "Atualizar" : "Cadastrar";
-        btnSalvar.type = "submit";
-        divContainerBtn.appendChild(btnSalvar);
-        form.appendChild(divContainerBtn);
+        const divBotao = document.createElement("div");
+        const botao = document.createElement("button");
+        botao.textContent = idEdicao ? "Atualizar" : "Cadastrar";
+        botao.type = "submit";
+
+        divBotao.appendChild(botao);
+        divFormulario.appendChild(divBotao);
+        form.appendChild(divFormulario);
 
         if(idEdicao)
         {
@@ -314,6 +323,7 @@ const appCorporativa =
                             campo.value = valor ?? "";
 
                         }
+
                     });
 
                 }
@@ -377,11 +387,12 @@ const appCorporativa =
                     body: JSON.stringify(obj)
 
                 });
+                
                 if(resp.ok)
                 {
                     alert(idEdicao ? "Registro atualizado com sucesso!" : "Registro cadastrado com sucesso!");
-                    //window.location.href = "index.html";
                     form.reset();
+                    window.location.href = "./lista.html";
 
                 }
                 else
@@ -391,9 +402,9 @@ const appCorporativa =
                 }
 
             }
-            catch(err)
+            catch(e)
             {
-                console.error("Erro ao enviar formulário:", err);
+                console.error("Erro ao enviar formulário:", e);
 
             }
 

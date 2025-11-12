@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async function()
         campos:
         [
             {titulo: 'ID', dado: 'id', tipo: 'oculto', obrigatorio: false},
-            {titulo: 'Nome', dado: 'nome', tipo: 'textoCurto', obrigatorio: true},
+            {titulo: 'Nome', dado: 'nome', tipo: 'texto', obrigatorio: true},
             {titulo: "Tipo", dado: "tipo", tipo: "selecao", opcoes: [{nome: "Desenvolvedora", valor: "desenvolvedora"}, {nome: "Distribuidora", valor: "distribuidora"}], obrigatorio: true},
 
         ],

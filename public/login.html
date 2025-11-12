@@ -4,16 +4,18 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login</title>
-        <link rel="stylesheet" href="style-login.css">
+        <link rel="stylesheet" href="./css/style.css">
     </head>
 
     <body>
-        <div class="login-card">
-            <h2>Entrar no Sistema</h2>
-            <p>Escolha um provedor de login:</p>
-            <button onclick="loginComGoogle()">Login com Google</button>
+        <div class="login-container">
+            <div class="login-card">
+                <h1>Entrar no Sistema</h2>
+                <p>Escolha um provedor de login:</p>
+                <a onclick="loginComGoogle()">Login com Google</a>
+            </div>
         </div>
-
+        
         <script>
             const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
             const GOOGLE_CLIENT_ID = "565559413209-odiq1a877dap59ppidoetbm5jdr17eop.apps.googleusercontent.com";

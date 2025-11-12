@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", async function()
 {
     let parametros =
     {
-        idTabela: 'tabelaConta',
+        idLista: 'listaConta',
         url: 'http://localhost:8080/AppCorporativaMavenWeb/contas',
-        colunas:
+        linhas:
         [
             {titulo: 'ID', dado: 'id'},
             {titulo: 'Nome', dado: 'nome'},
@@ -22,6 +22,6 @@ document.addEventListener("DOMContentLoaded", async function()
         token: localStorage.getItem("tokenAppCorporativa"),
 
     };
-    await appCorporativa.criarTabela(parametros);
+    await appCorporativa.criarLista(parametros);
 
 });

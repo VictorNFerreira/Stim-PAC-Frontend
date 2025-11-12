@@ -1,0 +1,35 @@
+.cabecalho
+{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    padding: 30px 80px;
+    margin: 0px auto;
+    justify-content: space-between;
+    align-items: center;
+    background: #0a0a0a;
+
+}
+
+.cabecalho-menu ul
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px
+
+}
+
+.cabecalho-menu ul li a
+{
+    padding: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #f3f3f3;
+    
+}
+
+.cabecalho-menu ul li a:hover
+{
+    color: #11bb33;
+
+}
