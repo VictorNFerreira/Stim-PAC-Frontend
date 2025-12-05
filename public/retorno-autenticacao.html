@@ -28,18 +28,53 @@
                 const tokenResponse = await fetch("http://localhost:8080/AppCorporativaMavenWeb/auth/google",
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {"Content-Type": "application/x-www-form-urlencoded"},
                     body: params2,
 
                 })
                 console.log("Codigo:", code);
                 const tokenData = await tokenResponse.json();
                 console.log("Token recebido:", tokenData);
+                const decodeToken = decodeJwt(tokenData.id_token);
+                console.log("Token decodificado:", decodeToken);
 
                 localStorage.setItem("tokenAppCorporativa", tokenData.id_token);
-                //localStorage.setItem("tokenAppCorporativa", code);
                 
-                window.location.href = "/public/index.html";
+                await fetch("http://localhost:8080/AppCorporativaMavenWeb/contas/listar-por-email?email=" + decodeToken.email,
+                {
+                    method: "GET",
+                    headers: {"Authorization": "Bearer " + tokenData.id_token},
+
+                }).then(result =>
+                {
+                    console.log("Resposta da verificação do usuário:", result);
+                    console.log("Status da resposta:", result.status);
+
+                    if(result.status == 404)
+                    {
+                        window.location.href = "/public/conta/formulario.html?email=" + decodeToken.email;
+                        return null;
+
+                    }
+                    return result.json();
+                    
+                }).then(conta =>
+                {
+                    console.log("Dados da conta:", conta);
+                    if(conta == null)
+                        return null;
+                    localStorage.setItem("contaAppCorporativa", JSON.stringify(conta))
+                    window.location.href = "/public/index.html";
+
+                });
+
+            }
+
+            function decodeJwt(token)
+            {
+                const payload = token.split(".")[1];
+                const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+                return JSON.parse(decoded);
 
             }
 

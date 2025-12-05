@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async function()
             {titulo: 'Email', dado: 'email'},
             {titulo: 'Senha', dado: 'senha'},
             {titulo: 'Saldo', dado: 'saldo'},
+            {titulo: 'Papel', dado: 'papel'},
             {titulo: "Biblioteca", dado: "biblioteca.id"},
 
         ],

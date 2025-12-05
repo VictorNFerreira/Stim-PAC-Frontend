@@ -175,6 +175,7 @@ const appCorporativa =
                 input = document.createElement("select");
                 input.name = col.dado;
                 input.id = col.dado;
+                input.value =  col.valorPadrao ? col.valorPadrao : "";
 
                 const optGenerico = document.createElement("option");
                 optGenerico.value = "";
@@ -217,6 +218,9 @@ const appCorporativa =
                 input = document.createElement("textarea");
                 input.name = col.dado;
                 input.id = col.dado;
+                input.placeholder = col.titulo;
+                input.textContent =  col.valorPadrao ? col.valorPadrao : "";
+
                 if(col.obrigatorio)
                     input.required = true;
 
@@ -251,6 +255,7 @@ const appCorporativa =
                 input.name = col.dado;
                 input.id = col.dado;
                 input.placeholder = col.titulo;
+                input.value =  col.valorPadrao ? col.valorPadrao : "";
                 if(col.obrigatorio)
                     input.required = true;
 
@@ -314,13 +319,13 @@ const appCorporativa =
                 {
                     const dados = await resp.json();
                     console.log("Dados retornados", dados);
-                    parametros.colunas.forEach(col =>
+                    parametros.campos.forEach(campo =>
                     {
-                        const campo = form.querySelector(`[name='${col.dado}']`);
-                        if(campo)
+                        const campoEdit = form.querySelector(`[name='${campo.dado}']`);
+                        if(campoEdit)
                         {
-                            const valor = col.dado.split('.').reduce((obj, chave) => obj && obj[chave], dados);
-                            campo.value = valor ?? "";
+                            const valor = campo.dado.split('.').reduce((obj, chave) => obj && obj[chave], dados);
+                            campoEdit.value = valor ?? "";
 
                         }
 
