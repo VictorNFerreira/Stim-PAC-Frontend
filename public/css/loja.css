@@ -1,9 +1,9 @@
-.cabecalho
+.loja-cabecalho
 {
     display: flex;
     flex-wrap: wrap;
     max-width: 1400px;
-    padding: 20px 80px;
+    padding: 15px 80px;
     margin: 0px auto;
     justify-content: space-between;
     align-items: center;
@@ -11,20 +11,20 @@
 
 }
 
-.cabecalho-logo h1
+.cabecalho-titulo h1
 {
-    font-size: 3.5rem;
+    font-size: 4rem;
 
 }
 
-.cabecalho-logo span
+.cabecalho-titulo span
 {
-    font-size: 3.6rem;
+    font-size: 4.1rem;
     color: #11bb33;
 
 }
 
-.cabecalho-logo a
+.cabecalho-titulo a
 {
     display: flex;
     align-items: end;
@@ -58,5 +58,34 @@
 .cabecalho-menu ul li a:hover
 {
     color: #11bb33;
+
+}
+
+.loja
+{
+    display: grid;
+    max-width: 1400px;
+    height: 90vh;
+    padding: 20px 80px;
+    margin: 0px auto;
+    background: #131313;
+
+}
+
+.loja-rodape
+{
+    display: grid;
+    max-width: 1400px;
+    padding: 20px 80px;
+    margin: 0px auto;
+    background: #0a0a0a;
+
+}
+
+.loja-rodape p
+{
+    margin: 10px 0px;
+    font-size: 1.1rem;
+    color: #f3f3f3;
 
 }

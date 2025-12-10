@@ -1,6 +1,7 @@
 @import "./global.css";
 @import "./cabecalho.css";
 
+@import "./loja.css";
 @import "./listas.css";
 @import "./forms.css";
 @import "./login.css";
